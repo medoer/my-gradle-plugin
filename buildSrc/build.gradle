@@ -1,0 +1,25 @@
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+}
+
+group 'tech.medo'
+version '0.0.1'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation('org.spockframework:spock-core:1.3-groovy-2.5') {
+        exclude module: 'groovy-all'
+    }
+
+}
+
+//test {
+//    useJUnitPlatform()
+//}
