@@ -3,6 +3,7 @@ package tech.medo.plugin.filediff
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.plugins.JavaLibraryPlugin
 
 /**
  * @author bryce
@@ -16,6 +17,8 @@ class FileDiffPlugin implements Plugin<Project>{
       file1 = project.fileDiff.file1
       file2 = project.fileDiff.file2
     }
-    project.getDependencies().add("implementation", "com.diffplug.guava:guava-core:19.0.0")
+    project.getPlugins().apply(JavaLibraryPlugin.class);
+    project.getDependencies().add("api", "tech.medo:medo-platform-dependencies:0.0.1-SNAPSHOT");
+//    project.getDependencies().add("implementation", "com.diffplug.guava:guava-core:19.0.0")
   }
 }
