@@ -1,25 +1,39 @@
 plugins {
-    id 'groovy'
-    id 'java-gradle-plugin'
+    id "java-gradle-plugin"
 }
-
-group 'tech.medo'
-version '0.0.1'
 
 repositories {
     mavenLocal()
     mavenCentral()
+    gradlePluginPortal()
 }
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    testImplementation('org.spockframework:spock-core:1.3-groovy-2.5') {
-        exclude module: 'groovy-all'
-    }
-
+    implementation(platform("org.springframework:spring-framework-bom:5.3.15"))
+    implementation("org.springframework:spring-core")
+    implementation("org.apache.maven:maven-embedder:3.6.2")
+    testImplementation("org.assertj:assertj-core:3.11.1")
+    testImplementation("org.apache.logging.log4j:log4j-core:2.17.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 }
 
-//test {
-//    useJUnitPlatform()
-//}
+gradlePlugin {
+    plugins{
+        bomPlugin {
+            id = "tech.medo.bom"
+            implementationClass = "tech.medo.build.bom.BomPlugin"
+        }
+        deployedPlugin {
+            id = "tech.medo.deployed"
+            implementationClass = "tech.medo.build.MedoDeployedPlugin"
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
