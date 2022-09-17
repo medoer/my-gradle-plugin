@@ -25,11 +25,11 @@ gradlePlugin {
     plugins{
         bomPlugin {
             id = "tech.medo.bom"
-            implementationClass = "tech.medo.build.bom.BomPlugin"
+            implementationClass = "tech.medo.plugin.bom.BomPlugin"
         }
         deployedPlugin {
             id = "tech.medo.deployed"
-            implementationClass = "tech.medo.build.MedoDeployedPlugin"
+            implementationClass = "tech.medo.plugin.MedoDeployedPlugin"
         }
     }
 }
