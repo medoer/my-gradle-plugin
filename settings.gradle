@@ -1,1 +1,5 @@
 rootProject.name = 'my-gradle-plugin'
+
+include 'medo-platform:medo-dependencies'
+include 'medo-platform:medo-plugin'
+

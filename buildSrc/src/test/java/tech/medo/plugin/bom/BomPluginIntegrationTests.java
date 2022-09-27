@@ -272,6 +272,34 @@ class BomPluginIntegrationTests {
 		});
 	}
 
+	@Test
+	void effectiveBomArtifact() throws IOException {
+		try (PrintWriter out = new PrintWriter(new FileWriter(this.buildFile))) {
+			out.println("plugins {");
+			out.println("    id 'tech.medo.bom'");
+			out.println("}");
+			out.println("bom {");
+			out.println("	 effectiveBomArtifact()");
+			out.println("    library('Spring Boot', '1.2.3') {");
+			out.println("        group('org.springframework.boot') {");
+			out.println("            modules = [");
+			out.println("                'spring-boot'");
+			out.println("            ]");
+			out.println("        }");
+			out.println("    }");
+			out.println("}");
+		}
+		generatePom((pom) -> {
+			assertThat(pom).textAtPath("//properties/spring-boot.version").isEmpty();
+			NodeAssert dependency = pom.nodeAtPath("//dependencyManagement/dependencies/dependency[1]");
+			assertThat(dependency).textAtPath("groupId").isEqualTo("org.springframework.boot");
+			assertThat(dependency).textAtPath("artifactId").isEqualTo("spring-boot");
+			assertThat(dependency).textAtPath("version").isEqualTo("1.2.3");
+			assertThat(dependency).textAtPath("scope").isNullOrEmpty();
+			assertThat(dependency).textAtPath("type").isNullOrEmpty();
+		});
+	}
+
 	// @Test
 	// void versionAlignmentIsVerified() throws IOException {
 	// try (PrintWriter out = new PrintWriter(new FileWriter(this.buildFile))) {

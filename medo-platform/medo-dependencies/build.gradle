@@ -1,0 +1,60 @@
+plugins {
+    id "tech.medo.bom"
+    id "tech.medo.deployed"
+}
+
+description = "Dependencies"
+
+bom {
+    effectiveBomArtifact()
+    library("ActiveMQ", "5.16.5") {
+        prohibit("[5.17.0,)") {
+            because "it requires Java 11"
+        }
+        group("org.apache.activemq") {
+            modules = [
+                "activemq-amqp",
+                "activemq-blueprint",
+                "activemq-broker",
+                "activemq-camel",
+                "activemq-client",
+                "activemq-console" {
+                    exclude group: "commons-logging", module: "commons-logging"
+                },
+                "activemq-http",
+                "activemq-jaas",
+                "activemq-jdbc-store",
+                "activemq-jms-pool",
+                "activemq-kahadb-store",
+                "activemq-karaf",
+                "activemq-leveldb-store" {
+                    exclude group: "commons-logging", module: "commons-logging"
+                },
+                "activemq-log4j-appender",
+                "activemq-mqtt",
+                "activemq-openwire-generator",
+                "activemq-openwire-legacy",
+                "activemq-osgi",
+                "activemq-partition",
+                "activemq-pool",
+                "activemq-ra",
+                "activemq-run",
+                "activemq-runtime-config",
+                "activemq-shiro",
+                "activemq-spring" {
+                    exclude group: "commons-logging", module: "commons-logging"
+                },
+                "activemq-stomp",
+                "activemq-web"
+            ]
+        }
+    }
+
+    library("Dependency Management Plugin", "1.0.13.RELEASE") {
+        group("io.spring.gradle") {
+            modules = [
+                "dependency-management-plugin"
+            ]
+        }
+    }
+}

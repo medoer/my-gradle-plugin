@@ -114,7 +114,9 @@ public class BomExtension {
 					try {
 						String settingsXmlContent = FileCopyUtils
 								.copyToString(new InputStreamReader(
-										getClass().getClassLoader().getResourceAsStream("effective-bom-settings.xml"),
+										getClass()
+												.getClassLoader()
+												.getResourceAsStream("effective-bom-settings.xml"),
 										StandardCharsets.UTF_8))
 								.replace("localRepositoryPath",
 										new File(this.project.getBuildDir(), "local-m2-repository").getAbsolutePath());

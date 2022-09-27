@@ -52,13 +52,18 @@ public class BomPlugin implements Plugin<Project> {
 		plugins.apply(MedoDeployedPlugin.class);
 		plugins.apply(MavenRepositoryPlugin.class);
 		plugins.apply(JavaPlatformPlugin.class);
+
 		JavaPlatformExtension javaPlatform = project.getExtensions().getByType(JavaPlatformExtension.class);
 		javaPlatform.allowDependencies();
+
 		createApiEnforcedConfiguration(project);
+
 		BomExtension bom = project.getExtensions().create("bom", BomExtension.class, project.getDependencies(),
 				project);
+
 		project.getTasks().create("bomrCheck", CheckBom.class, bom);
 //		project.getTasks().create("bomrUpgrade", UpgradeBom.class, bom);
+
 		new PublishingCustomizer(project, bom).customize();
 
 	}
@@ -100,19 +105,26 @@ public class BomPlugin implements Plugin<Project> {
 		private void customizePom(MavenPom pom) {
 			pom.withXml((xml) -> {
 				Node projectNode = xml.asNode();
+
 				Node properties = new Node(null, "properties");
+
 				this.bom.getProperties().forEach(properties::appendNode);
+
 				Node dependencyManagement = findChild(projectNode, "dependencyManagement");
 				if (dependencyManagement != null) {
 					addPropertiesBeforeDependencyManagement(projectNode, properties);
+
 					addClassifiedManagedDependencies(dependencyManagement);
+
 					replaceVersionsWithVersionPropertyReferences(dependencyManagement);
+
 					addExclusionsToManagedDependencies(dependencyManagement);
+
 					addTypesToManagedDependencies(dependencyManagement);
-				}
-				else {
+				} else {
 					projectNode.children().add(properties);
 				}
+
 				addPluginManagement(projectNode);
 			});
 		}
@@ -121,6 +133,7 @@ public class BomPlugin implements Plugin<Project> {
 		private void addPropertiesBeforeDependencyManagement(Node projectNode, Node properties) {
 			for (int i = 0; i < projectNode.children().size(); i++) {
 				if (isNodeWithName(projectNode.children().get(i), "dependencyManagement")) {
+					// insert and shift
 					projectNode.children().add(i, properties);
 					break;
 				}

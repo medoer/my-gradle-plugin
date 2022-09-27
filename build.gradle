@@ -7,9 +7,17 @@ plugins {
 group = 'tech.medo'
 version = '0.0.1'
 
-repositories {
-  mavenLocal()
-  mavenCentral()
+allprojects {
+  group "tech.medo"
+
+  repositories {
+    mavenLocal()
+    mavenCentral()
+  }
+
+  configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, "minutes"
+  }
 }
 
 dependencies {
